@@ -1,0 +1,53 @@
+% -*- coding: utf-8 -*-
+\documentclass{article}
+\usepackage[b5paper,margin=5mm]{geometry}
+\usepackage{hyperref,verbatim}
+\hypersetup{
+  colorlinks,
+  citecolor = teal,
+  linkcolor = blue,
+  urlcolor = purple,
+  pdfstartview = {FitH},
+  bookmarksnumbered
+}
+\newcommand\addclass[1]{
+  \section{\texttt{beamer#1.cls}}
+  \verbatiminput{beamer/beamer#1.cls}
+}
+\newcommand\addstyle[1]{
+  \section{\texttt{beamer#1.sty}}
+  \verbatiminput{beamer/beamer#1.sty}
+}
+\begin{document}
+\addclass{}
+\addstyle{article}
+\addstyle{basearticle}
+\addstyle{baseauxtemplates}
+\addstyle{baseboxes}
+\addstyle{basecolor}
+\addstyle{basecompatibility}
+\addstyle{basedecode}
+\addstyle{baseexercise}
+\addstyle{basefont}
+\addstyle{baseframe}
+\addstyle{baseframecomponents}
+\addstyle{baseframesize}
+\addstyle{baselocalstructure}
+\addstyle{basemisc}
+\addstyle{basemodes}
+\addstyle{basenavigation}
+\addstyle{basenotes}
+\addstyle{baseoptions}
+\addstyle{baseoverlay}
+\addstyle{basercs}
+\addstyle{baserequires}
+\addstyle{basesection}
+\addstyle{basetemplates}
+\addstyle{basethemes}
+\addstyle{basetheorems}
+\addstyle{basetitle}
+\addstyle{basetoc}
+\addstyle{basetranslator}
+\addstyle{basetwoscreens}
+\addstyle{baseverbatim}
+\end{document}
