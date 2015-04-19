@@ -1,7 +1,7 @@
 % -*- coding: utf-8 -*-
 \documentclass{article}
 \usepackage[b5paper,margin=5mm]{geometry}
-\usepackage{hyperref,verbatim}
+\usepackage{hyperref}
 \hypersetup{
   colorlinks,
   citecolor = teal,
@@ -10,13 +10,18 @@
   pdfstartview = {FitH},
   bookmarksnumbered
 }
+\usepackage{listings,marvosym,xcolor}
+\lstset{
+  basicstyle=\ttfamily,columns=flexible,breaklines=true,
+  prebreak={\space\hbox{\textcolor{blue}{\Righttorque}}},postbreak=\hbox{\textcolor{blue}{\Lefttorque}}\space
+}
 \newcommand\addclass[1]{
   \section{\texttt{beamer#1.cls}}
-  \verbatiminput{beamer/beamer#1.cls}
+  \lstinputlisting{beamer/beamer#1.cls}
 }
 \newcommand\addstyle[1]{
   \section{\texttt{beamer#1.sty}}
-  \verbatiminput{beamer/beamer#1.sty}
+  \lstinputlisting{beamer/beamer#1.sty}
 }
 \begin{document}
 \addclass{}
