@@ -10,6 +10,7 @@
   pdfstartview = {FitH},
   bookmarksnumbered
 }
+%
 \usepackage{listings,marvosym,xcolor}
 \lstset{
   basicstyle=\ttfamily,columns=flexible,breaklines=true,frame=single,backgroundcolor=\color{gray!10},
@@ -24,6 +25,7 @@
   \section{\texttt{beamer#1.sty}}
   \lstinputlisting{beamer/beamer#1.sty}
 }
+%
 \usepackage{makedoc,niceverb}
 \newcommand\addmdclass[1]{
   \section{\texttt{beamer#1.cls}}
@@ -35,6 +37,7 @@
   \renewcommand*{\mdJobName}{beamer/beamer#1}
   \MakeInputJobDoc[sty][txt]{0}{\ProcessInputWith{PPScomment}}
 }
+%
 \usepackage{etoolbox}
 \patchcmd{\TreatAsComment}{mdPackageCode}{lstlisting}{}{}
 \patchcmd{\TreatAsCode}{mdPackageCode}{lstlisting}{}{}
@@ -42,6 +45,10 @@
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \catcode`\_=8
+%
+\setlength{\parindent}{2em}
+\setlength{\parskip}{5pt plus 1pt}
+%
 \usepackage{xeCJK}
 \setCJKmainfont{SimSun}
 \setCJKsansfont{KaiTi}
