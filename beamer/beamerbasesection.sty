@@ -1,3 +1,4 @@
+%% % -*- coding: utf-8 -*-
 % Copyright 2003--2007 by Till Tantau
 % Copyright 2010 by Vedran Mileti\'c
 %
@@ -179,6 +180,21 @@
 
 \newcommand<>{\section}{\alt#1{\@ifnextchar[\beamer@section\beamer@@section}{\beamer@secgobble}}
 
+%%     `\section' 命令会在 `toc' 文件中写入这样一行 `\beamer@sectionintoc{#1}{#2}{#3}{#4}{#5}'，
+%% 此命令在 `beamerbasetoc.sty' 中定义，并由 `\tableofcontents' 命令调用。它的五个参数的含义如下：
+%% \begin{itemize}
+%%   \item #1 是节编号 `\the\c@section'
+%%   \item #2 是节标题
+%%   \item #3 是页码 `\the\c@page'
+%%   \item #4 是部分编号 `\the\c@part'
+%%   \item #5 是目录节编号 `\the\beamer@tocsectionnumber'
+%% \end{itemize}
+%% 其中 #1 和 #5 的区别在于：`\c@section' 对应 `\insertsectionnumber'，
+%% 而 `\the\beamer@tocsectionnumber' 对应 `\inserttocsectionnumber'。\par
+%%     和 `article' 文档类一样，`\section*' 也不会记录到 `toc' 文件中。
+%% 但与 `article' 不同的是，在 `beamer' 中 `\section*' 还是会 `\refstepcounter{section}'。
+%% 也就是说 `\c@section' 对 `\section' 和 `\section*' 一起编号，
+%% 而 `\beamer@tocsectionnumber' 只对 `\section' 编号。
 \def\beamer@@section{\@ifnextchar*\beamer@@ssection\beamer@@@section}
 \long\def\beamer@@ssection*#1{\beamer@section[{#1}]{}}
 \long\def\beamer@@@section#1{\beamer@section[{#1}]{#1}}
