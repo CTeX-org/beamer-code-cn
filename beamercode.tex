@@ -24,6 +24,24 @@
   \section{\texttt{beamer#1.sty}}
   \lstinputlisting{beamer/beamer#1.sty}
 }
+\usepackage{makedoc,niceverb}
+\newcommand\addmdclass[1]{
+  \section{\texttt{beamer#1.cls}}
+  \renewcommand*{\mdJobName}{beamer/beamer#1}
+  \MakeInputJobDoc[cls][txt]{0}{\ProcessInputWith{PPScomment}}
+}
+\newcommand\addmdstyle[1]{
+  \section{\texttt{beamer#1.sty}}
+  \renewcommand*{\mdJobName}{beamer/beamer#1}
+  \MakeInputJobDoc[sty][txt]{0}{\ProcessInputWith{PPScomment}}
+}
+\usepackage{etoolbox}
+\patchcmd{\TreatAsComment}{mdPackageCode}{lstlisting}{}{}
+\patchcmd{\TreatAsCode}{mdPackageCode}{lstlisting}{}{}
+\catcode`\_=11
+\patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
+\patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
+\catcode`\_=8
 \begin{document}
 \addclass{}
 \addstyle{article}
