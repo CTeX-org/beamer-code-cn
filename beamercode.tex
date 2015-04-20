@@ -14,7 +14,7 @@
 \lstset{
   basicstyle=\ttfamily,columns=flexible,breaklines=true,
   language=[LaTeX]{TeX},commentstyle=\color{teal},keywordstyle=\color{blue},
-  prebreak={\space\hbox{\textcolor{brown}{\Righttorque}}},postbreak=\hbox{\textcolor{brown}{\Lefttorque}}\space
+  prebreak={\space\hbox{\textcolor{brown}{?}}},postbreak=\hbox{\textcolor{brown}{?}}\space
 }
 \newcommand\addclass[1]{
   \section{\texttt{beamer#1.cls}}
@@ -42,6 +42,10 @@
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \catcode`\_=8
+\usepackage{xeCJK}
+\setCJKmainfont{SimSun}
+\setCJKsansfont{KaiTi}
+\setCJKmonofont{SimHei}
 \begin{document}
 \addclass{}
 \addstyle{article}
