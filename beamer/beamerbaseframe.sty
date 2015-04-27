@@ -1,3 +1,4 @@
+%% % -*- coding: utf-8 -*-
 % Copyright 2003--2007 by Till Tantau
 % Copyright 2010 by Vedran Mileti\'c
 % Copyright 2011 by Vedran Mileti\'c, Joseph Wright
@@ -54,6 +55,9 @@
   }%
 }
 
+%% Beamer 的每个 slide 放在这个环境中，实际上放在 `beamer@framepauses' 环境中。
+%% `beamer@framepauses' 环境在 `beamerbaseoverlay.sty' 文件中定义。\par
+%% 注意 frame 环境的 frametitle 和 framesubtitle 参数在这里调用 `\beamer@checkframetitle' 检测。
 \newenvironment{beamer@frameslide}{%
   \ifbeamer@autobreak\else%
     \ifx\beamer@againname\@empty%
@@ -346,6 +350,7 @@
 <all>
 {\def\beamer@frametext{frame}}
 
+%% `\frame' 命令调用 `\beamer@framecommand' 命令。
 \def\frame{%
   \ifx\@currenvir\beamer@frametext%
     \gdef\beamer@frameoptions{}%
@@ -388,6 +393,8 @@
 
 % Check for old version:
 
+%% `\beamer@framecommand' 命令调用 `\beamer@frame' 命令。
+%% 估计在旧版本中 frame 环境的参数形式不一致，所以得特别检测。
 \def\beamer@framecommand{%
   \edef\beamer@defaultospec{\beamer@gdefaultospec}%
   \@ifnextchar<\beamer@frame\beamer@checkoldframe}
@@ -410,6 +417,9 @@
   \def\beamer@defaultospec{#2}%
   \@ifnextchar[{\beamer@@@@frame<#1>}{\beamer@@@@frame<#1>[]}}
 
+%% 这里的 `\beamer@frame' 命令仅处理 frame 环境的前面三个可选参数，各个参数的介绍见文档 \S8.1 的描述。\par
+%%     第一个可选参数就是覆盖指令（overlay specification）。Beamer 设定 `\beamer@slideinframe=0'，
+%% 然后调用 `\beamer@masterdecode' 看是否存在 slide。如果存在，一般调用 `\beamer@doseveralframes' 处理。
 \newdimen\framewidth
 \def\beamer@frame<#1>{
   \@ifnextchar[{\beamer@@@frame<#1>}{\beamer@@@frame<#1>[]}}
@@ -458,17 +468,17 @@
     \beamer@anotherslidefalse%
     {\beamer@masterdecode{\beamer@whichframes}}%
     \ifbeamer@anotherslide%
-%%       \beamer@slideinframe=2\relax%
-%%       \def\beamer@doifnotinframe{}%
-%%       \def\beamer@doifinframe{\let\beamer@howtotreatframe\beamer@doseveralframes}%
-%%       \beamer@anotherslidefalse%
-%%       {\beamer@masterdecode{\beamer@whichframes}}%
-%%       \ifbeamer@anotherslide%
+%%%       \beamer@slideinframe=2\relax%
+%%%       \def\beamer@doifnotinframe{}%
+%%%       \def\beamer@doifinframe{\let\beamer@howtotreatframe\beamer@doseveralframes}%
+%%%       \beamer@anotherslidefalse%
+%%%       {\beamer@masterdecode{\beamer@whichframes}}%
+%%%       \ifbeamer@anotherslide%
         \let\beamer@howtotreatframe\beamer@doseveralframes%
-%%       \else% single slide in frame
-%%         \let\beamer@howtotreatframe\beamer@dosingleframe%
-%%       \fi%
-%%       \beamer@donow%
+%%%       \else% single slide in frame
+%%%         \let\beamer@howtotreatframe\beamer@dosingleframe%
+%%%       \fi%
+%%%       \beamer@donow%
       \ifbeamer@containsverbatim%
         \let\beamer@howtotreatframe\beamer@dosingleframe%
       \fi%
@@ -515,6 +525,9 @@
   \beamer@do}
 \def\beamer@noframesingletoken{\beamer@next\egroup\beamer@reseteecodes}
 
+%% `\beamer@doseveralframes' 循环解码并构造 frame 中的各个 slide。\par
+%%     这里的 `#1' 包含 frame 环境的后两个可选参数（frametitle 和 framesubtitle）,
+%% 它们在 `beamer@frameslide' 环境的开始处检测并处理。
 \long\def\beamer@doseveralframes#1{%
   \ifx\beamer@againname\@empty\else%
     % Again stuff
