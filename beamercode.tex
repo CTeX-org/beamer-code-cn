@@ -26,7 +26,7 @@
   \lstinputlisting{beamer/beamer#1.sty}
 }
 %
-\usepackage{makedoc,niceverb}
+\usepackage{makedoc}
 \newcommand\addmdclass[1]{
   \section{\texttt{beamer#1.cls}}
   \renewcommand*{\mdJobName}{beamer/beamer#1}
@@ -45,6 +45,14 @@
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \catcode`\_=8
+%
+\usepackage{shortvrb}
+\MakeShortVerb\|
+\DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
+\DeclareRobustCommand\env{\texttt}
+\DeclareRobustCommand\cls{\textsf}
+\DeclareRobustCommand\pkg{\textsf}
+\DeclareRobustCommand\sty[1]{\textsf{#1.sty}}
 %
 \setlength{\parindent}{2em}
 \setlength{\parskip}{5pt plus 1pt}

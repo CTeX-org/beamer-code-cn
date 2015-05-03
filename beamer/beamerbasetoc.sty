@@ -68,17 +68,17 @@
 \def\beamer@@parsetocsections#1[]{\def\beamer@tocsections{#1}}
 \def\beamer@@@parsetocsections#1[]{\def\beamer@tocsections{<all:#1>}}
 
-%%     依据文档 \S 10.5 的说明，下面这些宏对应 `\tableofcontents' 的如下这些选项
+%% 依据文档 \S 10.5 的说明，下面这些宏对应 \cs{tableofcontents} 的如下这些选项
 %% \begin{itemize}
-%%   \item `\beamer@toc@cs'：`style for current section'
-%%   \item `\beamer@toc@os'：`style for other sections'
-%%   \item `\beamer@toc@css'：`style for current subsection'
-%%   \item `\beamer@toc@oss'：`style for other subsections in current section'
-%%   \item `\beamer@toc@ooss'：`style for subsections in other sections'
-%%   \item `\beamer@toc@csss'：`style for current subsubsection'
-%%   \item `\beamer@toc@osss'：`style for other subsubsections in current subsection'
-%%   \item `\beamer@toc@oosss'：`style for subsubsections in other subsections in current section'
-%%   \item `\beamer@toc@ooosss'：`style for subsubsections in other subsections in other sections'
+%%   \item \cs{beamer@toc@cs}：style for current section
+%%   \item \cs{beamer@toc@os}：style for other sections
+%%   \item \cs{beamer@toc@css}：style for current subsection
+%%   \item \cs{beamer@toc@oss}：style for other subsections in current section
+%%   \item \cs{beamer@toc@ooss}：style for subsections in other sections
+%%   \item \cs{beamer@toc@csss}：style for current subsubsection
+%%   \item \cs{beamer@toc@osss}：style for other subsubsections in current subsection
+%%   \item \cs{beamer@toc@oosss}：style for subsubsections in other subsections in current section
+%%   \item \cs{beamer@toc@ooosss}：style for subsubsections in other subsections in other sections
 %% \end{itemize}
 \def\tableofcontents{\@ifnextchar[{\beamer@tableofcontents}{\beamer@tableofcontents[]}}
 \def\beamer@tableofcontents[#1]{%
@@ -116,18 +116,18 @@
 
 \def\beamer@hidetext{hide}
 
-%%     在 `beamerbasesection.sty' 中定义了 `\section' 命令，它在 `toc' 文件中写入 `\beamer@sectionintoc' 行，
-%% 而 `\tableofcontents' 命令载入并执行 `toc' 文件。\par
-%%     文档 \S 10.5 说明 `\tableofcontents' 有多个选项可以设置，其中的 `firstsection' 选项指定从第几节开始编号，
-%% 这个选项决定了 `\beamer@sectionadjust' 的值，从而影响 `\inserttocsectionnumber' 的值。\par
-%%     在 `\beamer@sectionintoc' 中必须先设定 `\inserttocsectionnumber' 和 `\inserttocsection' 的内容，
-%% 因为之后的 `\beamer@tocact' 命令实际上就执行 `\usebeamertemplate**{section in toc}' 命令，
-%% 而在 `section in toc' 模板中一般会用到 `\inserttocsectionnumber' 和 `\inserttocsection' 命令。\par
-%%     `Beamer' 将 `section in toc' 模板的内容放在 `vbox' 中，这样太长的节标题可以自动折行。
-%% 但中文节标题一般较短，如果你希望将它们居中而且左对齐显示时，简单地用 `center' 嵌套 `varwidth' 环境将无效。
-%% 你可以用 `etoolbox' 修改此命令，将这里的 `\vbox{}' 去掉。\par
-%%     从代码中可以看到，如果在目录中不显示小节标题，各个节标题上面会有 `1.5em' 的竖直空白。
-%% 这个空白似乎太大，可以用 `etoolbox' 将它改得小一点，比如 `0.5em'。
+%% 在 \sty{beamerbasesection} 中定义了 \cs{section} 命令，它在 |toc| 文件中写入 \cs{beamer@sectionintoc} 行，
+%% 而 \cs{tableofcontents} 命令载入并执行 |toc| 文件。\par
+%%     文档 \S 10.5 说明 \cs{tableofcontents} 有多个选项可以设置，其中的 |firstsection| 选项指定从第几节开始编号，
+%% 这个选项决定了 \cs{beamer@sectionadjust} 的值，从而影响 \cs{inserttocsectionnumber} 的值。\par
+%%     在 \cs{beamer@sectionintoc} 中必须先设定 \cs{inserttocsectionnumber} 和 \cs{inserttocsection} 的内容，
+%% 因为之后的 \cs{beamer@tocact} 命令实际上就执行 |usebeamertemplate**{section in toc}| 命令，
+%% 而在 |section in toc| 模板中一般会用到 \cs{inserttocsectionnumber} 和 \cs{inserttocsection} 命令。\par
+%%     Beamer 将 |section in toc| 模板的内容放在 |vbox| 中，这样太长的节标题可以自动折行。
+%% 但中文节标题一般较短，如果你希望将它们居中而且左对齐显示时，简单地用 \env{center} 嵌套 \env{varwidth} 环境将无效。
+%% 你可以用 \pkg{etoolbox} 修改此命令，将这里的 |\vbox{}| 去掉。\par
+%%     从代码中可以看到，如果在目录中不显示小节标题，各个节标题上面会有 |1.5em| 的竖直空白。
+%% 这个空白似乎太大，可以用 \pkg{etoolbox} 将它改得小一点，比如 |0.5em|。
 \def\sectionintoc{}
 \def\beamer@sectionintoc#1#2#3#4#5{%
   \ifnum\c@tocdepth>0%
