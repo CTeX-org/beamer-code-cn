@@ -30,12 +30,12 @@
 \newcommand\addmdclass[1]{
   \section{\texttt{beamer#1.cls}}
   \renewcommand*{\mdJobName}{beamer/beamer#1}
-  \MakeInputJobDoc[cls][txt]{0}{\ProcessInputWith{PPScomment}}
+  \MakeInputJobDoc*[cls][txt]{0}{\ProcessInputWith{PPScomment}}
 }
 \newcommand\addmdstyle[1]{
   \section{\texttt{beamer#1.sty}}
   \renewcommand*{\mdJobName}{beamer/beamer#1}
-  \MakeInputJobDoc[sty][txt]{0}{\ProcessInputWith{PPScomment}}
+  \MakeInputJobDoc*[sty][txt]{0}{\ProcessInputWith{PPScomment}}
 }
 %
 \usepackage{etoolbox}
@@ -44,6 +44,7 @@
 \catcode`\_=11
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
 \patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
+\patchcmd{\makedoc_maybe_autocorr}{\input{mdoccorr.cfg}}{}{}{}
 \catcode`\_=8
 %
 \usepackage{shortvrb}
