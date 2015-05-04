@@ -17,6 +17,7 @@
   language=[LaTeX]{TeX},commentstyle=\color{teal},keywordstyle=\color{blue},
   prebreak={\space\hbox{\textcolor{brown}{?}}},postbreak=\hbox{\textcolor{brown}{?}}\space
 }
+\lstnewenvironment{beamercode}{}{}
 \newcommand\addclass[1]{
   \section{\texttt{beamer#1.cls}}
   \lstinputlisting{beamer/beamer#1.cls}
@@ -39,13 +40,14 @@
 }
 %
 \usepackage{etoolbox}
-\patchcmd{\TreatAsComment}{mdPackageCode}{lstlisting}{}{}
-\patchcmd{\TreatAsCode}{mdPackageCode}{lstlisting}{}{}
+\patchcmd{\TreatAsComment}{mdPackageCode}{beamercode}{}{}
+\patchcmd{\TreatAsCode}{mdPackageCode}{beamercode}{}{}
 \catcode`\_=11
-\patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
-\patchcmd{\make_doc_arg}{mdPackageCode}{lstlisting}{}{}
+\patchcmd{\make_doc_arg}{mdPackageCode}{beamercode}{}{}
+\patchcmd{\make_doc_arg}{mdPackageCode}{beamercode}{}{}
 \patchcmd{\makedoc_maybe_autocorr}{\input{mdoccorr.cfg}}{}{}{}
 \catcode`\_=8
+\AfterEndEnvironment{beamercode}{\par}
 %
 \usepackage{shortvrb}
 \MakeShortVerb\|
