@@ -55,9 +55,12 @@
   }%
 }
 
-%% Beamer 的每个 slide 放在这个环境中，实际上放在 \env{beamer@framepauses} 环境中。
-%% \env{beamer@framepauses} 环境在 \sty{beamerbaseoverlay} 文件中定义。\par
-%% 注意 \env{frame} 环境的 frametitle 和 framesubtitle 参数在这里调用 \cs{beamer@checkframetitle} 检测。
+%% Beamer 的每个 slide 放在 \env{beamer@frameslide} 环境中，实际上是放在 \env{beamer@framepauses} 环境中，
+%% 然后放入 \cs{beamer@framebox} 盒子中，接着作伸缩（|shrink|）和 放大（|zoom|）处理，
+%% 最后才取出此盒子（伸缩和放大处理的代码见 \sty{beamerbaseframesize}）。\par
+%%     这里的 \env{beamer@framepauses} 环境在 \sty{beamerbaseoverlay} 文件中定义，
+%% 所有的覆盖命令将在这个环境里面处理。\par
+%% 注意 \env{frame} 环境的 |frametitle| 和 |framesubtitle| 参数在这里调用 \cs{beamer@checkframetitle} 检测。
 \newenvironment{beamer@frameslide}{%
   \ifbeamer@autobreak\else%
     \ifx\beamer@againname\@empty%
