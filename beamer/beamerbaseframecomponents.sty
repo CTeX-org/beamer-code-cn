@@ -1,3 +1,4 @@
+%% % -*- coding: utf-8 -*-
 % Copyright 2003--2007 by Till Tantau
 % Copyright 2010 by Vedran Mileti\'c
 % Copyright 2011 by Vedran Mileti\'c, Joseph Wright
@@ -53,6 +54,9 @@
 
 
 
+%% 这里用 \cs{ps@navigation} 定义一个名为 |navigation| 的页面样式，
+%% 然后用 |\pagestyle{navigation}| 启用此样式，参考 \textsf{source2e} 文档 \S63。\par
+%%     这个页面样式有些特殊，因为它的页眉包含背景、侧栏和顶栏，而页脚包含底栏。
 % Constructing a frame:
 
 \let\@mkboth\@gobbletwo
