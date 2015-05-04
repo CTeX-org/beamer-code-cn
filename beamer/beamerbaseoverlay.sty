@@ -1,3 +1,4 @@
+%% % -*- coding: utf-8 -*-
 % Copyright 2003--2007 by Till Tantau
 % Copyright 2010 by Vedran Mileti\'c
 % Copyright 2011 by Vedran Mileti\'c, Joseph Wright
@@ -9,6 +10,7 @@
 %
 % See the file doc/licenses/LICENSE for more details.
 
+%% 此文件实现了 Beamer 的各种覆盖效果，主要参考文档 \S9。
 \ProvidesPackageRCS $Header: /Users/joseph/Documents/LaTeX/beamer/base/beamerbaseoverlay.sty,v f6bd5e3805da 2013/12/25 18:41:14 joseph $
 
 %
@@ -29,6 +31,9 @@
   \fi%
   \reserved@c}
 
+%% \cs{beamer@masterdecode} 在 \sty{beamerbasedecode} 中定义，依据覆盖指令中是否包含当前 slide 编号，
+%% 分别将 \cs{beamer@donow} 设定为 \cs{beamer@doifinframe} 或者 \cs{beamer@doifnotinframe}。\par
+%%     \cs{only} 命令的覆盖指令（overlay specification）可以放在前面或者后面。
 %
 % \only
 %
@@ -41,6 +46,7 @@
   \def\beamer@doifnotinframe{}\def\beamer@doifinframe{#1}%
   {\beamer@masterdecode{#2}}\beamer@donow}
 
+%% \cs{alt} 命令的覆盖指令同样可以放在最前面或者最后面。
 %
 % \alt and \altenv
 %
@@ -139,6 +145,8 @@
 
 \newcount\beamer@argscount
 
+%% 重新定义 \cs{newenvironment} 和 \cs{renewenvironment}, 若后面有 |<>|，则可以包含覆盖指令，
+%% 且覆盖指令作为最后一个参数；否则保持原定义。
 %
 % newenvironment extension
 %
@@ -169,6 +177,8 @@
   \newenvironment<>{#1}}
 
 
+%% 重新定义 \cs{newcommand} 和 \cs{renewcommand}, 如果后面有 |<>|，则可以包含覆盖指令，
+%% 且覆盖指令作为最后一个参数；否则保持原定义。
 %
 % newcommand extension
 %
@@ -259,6 +269,7 @@
 <presentation>
 
 
+%% 将参数前面的水平或竖直 |skip| 移动到参数后面。
 % commands for smuggling skips past
 
 \newskip\beamer@lastskipcover
@@ -274,7 +285,39 @@
 }
 
 
-
+%% \cs{uncover}、\cs{onslide}（不含 \cs{onslide+} 和 \cs{onslide*}）和 \cs{pause} 命令的实现方式。
+%% 被覆盖内容的显示样式由 \cs{setbeamercovered} 命令确定，见文档 \S17.6。\par
+%%     \cs{uncover} 命令是可以嵌套的，嵌套深度记录在 \cs{beamer@coveringdepth} 中。
+%% 对于简单的覆盖效果，我们假定 \cs{uncover} 命令没有嵌套：这样下面的简单文档
+%% \begin{verbatim}
+%% \setbeamercovered{highly dynamic}
+%% \begin{frame}
+%% one\uncover<2->{two}\uncover<3->{three}
+%% \end{frame}
+%% \end{verbatim}
+%% 展开后的第一个 slide 约略等于
+%% \begin{verbatim}
+%% \begin{beamer@frameslide}
+%% one
+%% %
+%% \let\beamer@oldcolorhook\beamer@colorhook
+%% \xdef\beamer@colorhook{!15!bg\beamer@colorhook}\color{.}
+%% two
+%% \let\beamer@colorhook\beamer@oldcolorhook
+%% %
+%% \let\beamer@oldcolorhook\beamer@colorhook
+%% \xdef\beamer@colorhook{!10!bg\beamer@colorhook}\color{.}
+%% three
+%% \let\beamer@colorhook\beamer@oldcolorhook
+%% \end{beamer@frameslide}
+%% \end{verbatim}
+%% 从下面的代码 |\newcolormixin\beamer@colorhook| 可以看到，\cs{beamer@colorhook} 是一个混色。
+%% 混色功能在 \pkg{pgf} 中包含的 \pkg{xxcolor} 宏包中定义，参考 \pkg{pgf} 文档 \S86。
+%% 添加混色（例如 |!25!white|）后，每次用 \cs{color} 命令切换颜色时，都会将该混色添加到所选用颜色后面，
+%% 从而改变了实际得到的颜色。|bg| 是 \cls{beamer} 的背景色，因此用 |!15!bg| 混色将让文本颜色很接近背景色。\par
+%% 虽然用 |colormixin| 很容易改变文本的颜色，但从外部插入的图片的颜色却不会跟着变化。
+%% \cls{Beamer} 利用 \cs{pgfuseimage} 的 \cs{pgfalternateextension} 功能（见 \pkg{pgf} 文档 \S106.3），
+%% 可以根据当前覆盖透明度载入不同的图片，比如本来是载入 |some.png| 的，将改为载入 |some.15opaque.png|。
 %
 % Uncovering management
 %
@@ -309,6 +352,9 @@
           \the\beamer@coveringdepth\endcsname}%
         \color{.}%
       }}}%
+%% \sty{beamerbasedecode} 定义的 \cs{beamer@minimum} 仅在这里用到。
+%% 由于 \cs{opaqueness} 命令的覆盖指令是相对值，这里在编组中临时修改 \cs{beamer@slideinframe}，
+%% 以让该命令得到正确的效果。
   \ifnum\beamer@slideinframe<\beamer@minimum%ok, at beginning
   {%
     \beamer@saveanother%
@@ -385,6 +431,8 @@
 % Pausing
 %
 
+%% \env{beamer@framepauses} 是 \env{beamer@frameslide} 环境的主体部分。
+%% \cs{beamer@endpause} 的内容可以由覆盖命令设置。
 \newenvironment{beamer@framepauses}%internal
 {%
   \global\c@beamerpauses=1\relax%
@@ -392,6 +440,7 @@
 }
 {\beamer@endpause}
 
+%% \cs{pause} 实际上是包装好的 \cs{onslide} 命令。
 \newcommand{\beamer@@pause}[1][]{%
   \beamer@ifempty{#1}%
     {\global\advance\c@beamerpauses by1\relax}%
@@ -414,6 +463,13 @@
 
 
 
+%% 依据文档 \S9.3，\cs{onslide} 命令有多种形式，其中带花括号参数的三种形式分别为
+%% \begin{enumerate}
+%%   \item |\onslide<overlay specification>{text}|，它等同于 |\uncover<overlay specification>{text}|；
+%%   \item |\onslide+<overlay specification>{text}|，它等同于 |\visible<overlay specification>{text}|；
+%%   \item |\onslide*<overlay specification>{text}|，它等同于 |\only<overlay specification>{text}|。
+%% \end{enumerate}
+%% 另外还有两种不带花括号参数的形式：\cs{onslide} 和 \cs{onslide+}。
 \mode
 <all>
 {
@@ -431,6 +487,7 @@
   }
 }
 
+%% 不带花括号参数 \cs{onslide} 命令。其实现原理见前面 \cs{beamer@startcovered} 处的注释。
 \newcommand<>{\beamer@noargsonslide}{%
   \beamer@endpause%
   \alt#1%
@@ -438,6 +495,7 @@
   {\beamer@startcovered\gdef\beamer@endpause{\beamer@endcovered}}%
 }
 
+%% 不带花括号参数的 \cs{onslide+} 命令。其实现原理见后面 \cs{beamer@begininvisible} 处的注释。
 \newcommand<>{\beamer@noargsvisibleonslide}{%
   \beamer@endpause%
   \alt#1%
@@ -564,6 +622,7 @@
   \newcommand\beamer@gobbleoptionalinsp[2][]{\ignorespaces}
 }
 
+%% 为使 \cls{Beamer} 覆盖命令在编组结束后能够继续生效，这里使用了 \cs{aftergroup} 命令。
 \def\beamer@@spacingcover{\beamer@smuggle{\pgfsys@begininvisible\pgfsys@endinvisible}}
 \def\beamer@spacingcover{\beamer@@spacingcover\aftergroup\beamer@@spacingcover}
 
@@ -574,6 +633,38 @@
 \long\def\beamer@makecovered#1{\beamer@startcovered#1\beamer@endcovered}
 \long\def\beamer@reallymakeinvisible#1{\beamer@begininvisible#1\beamer@endinvisible}
 
+%% \cs{onslide} 和 \cs{uncover} 命令的实现在 \cs{beamer@startcovered} 处已经分析。
+%% 这里只分析 \cs{onslide+} 和 \cs{visible} 命令。实际上它们主要用到 \pkg{pgf}
+%% 提供的 \cs{pgfsys@begininvisible} 和 \cs{pgfsys@endinvisible} 命令（见 \pkg{pgf} 文档 \S115.13）。
+%% 对于下面的简单文档
+%% \begin{verbatim}
+%% \begin{frame}
+%% \onslide+<1>One\onslide+<2>Two
+%% \end{frame}
+%% \end{verbatim}
+%% 展开的结果约略等于
+%% \begin{verbatim}
+%% % slide 1
+%% \begin{beamer@frameslide}
+%% \pgfsys@begininvisible\pgfsys@endinvisible
+%% One
+%% \pgfsys@begininvisible\pgfsys@endinvisible
+%% \pgfsys@begininvisible
+%% Two
+%% \pgfsys@endinvisible
+%% \end{beamer@frameslide}
+%% % slide 2
+%% \begin{beamer@frameslide}
+%% \pgfsys@begininvisible
+%% One
+%% \pgfsys@endinvisible
+%% \pgfsys@begininvisible\pgfsys@endinvisible
+%% Two
+%% \pgfsys@begininvisible\pgfsys@endinvisible
+%% \end{beamer@frameslide}
+%% \end{verbatim}
+%% 经测试，未与 \cs{pgfsys@begininvisible} 配对使用的 \cs{pgfsys@endinvisible} 将得到错误的结果。
+%% 因此这里（即上面的 \cs{beamer@@spacingcover} 的定义中）在取消隐藏内容时需要同时使用这两个命令。
 \newcommand{\uncover}{\alt{\beamer@fakeinvisible}{\beamer@makecovered}}
 \newcommand{\visible}{\alt{\beamer@fakeinvisible}{\beamer@reallymakeinvisible}}
 \newcommand{\invisible}{\alt{\beamer@reallymakeinvisible}{\beamer@fakeinvisible}}
