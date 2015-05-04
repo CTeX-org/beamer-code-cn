@@ -664,7 +664,16 @@
 %% \end{beamer@frameslide}
 %% \end{verbatim}
 %% 经测试，未与 \cs{pgfsys@begininvisible} 配对使用的 \cs{pgfsys@endinvisible} 将得到错误的结果。
-%% 因此这里（即上面的 \cs{beamer@@spacingcover} 的定义中）在取消隐藏内容时需要同时使用这两个命令。
+%% 因此这里（即上面的 \cs{beamer@@spacingcover} 的定义中）在取消隐藏内容时需要同时使用这两个命令。\par
+%%     实际上，从 \textsf{pgfsys.code.tex} 文件中可以看到，这两个命令定义为对画布作变换：
+%% \begin{verbatim}
+%% \def\pgfsys@begininvisible{\pgfsys@transformcm{1}{0}{0}{1}{2000bp}{2000bp}}
+%% \def\pgfsys@endinvisible{\pgfsys@transformcm{1}{0}{0}{1}{-2000bp}{-2000bp}}
+%% \end{verbatim}
+%% 其中的线性变换矩阵为单位矩阵，因此只有后面的平移变换有效。结果是将画布移动到页面之外或者移动回来%
+%% （\cs{pgfsys@transformcm} 命令的说明见 \pkg{pgf} 文档 \S115.3）。因此两者必须配对使用。\par
+%%     实际上，\pkg{pgf} 的变换命令在正文中也能使用，未必得在 \env{pgfpicture} 环境中使用。
+%% 因此，\pkg{beamer} 的 \cs{visible} 才会是有效的。
 \newcommand{\uncover}{\alt{\beamer@fakeinvisible}{\beamer@makecovered}}
 \newcommand{\visible}{\alt{\beamer@fakeinvisible}{\beamer@reallymakeinvisible}}
 \newcommand{\invisible}{\alt{\beamer@reallymakeinvisible}{\beamer@fakeinvisible}}
