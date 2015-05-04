@@ -19,22 +19,22 @@
 }
 \lstnewenvironment{beamercode}{}{}
 \newcommand\addclass[1]{
-  \section{\texttt{beamer#1.cls}}
+  \section{\textsf{beamer#1.cls}}
   \lstinputlisting{beamer/beamer#1.cls}
 }
 \newcommand\addstyle[1]{
-  \section{\texttt{beamer#1.sty}}
+  \section{\textsf{beamer#1.sty}}
   \lstinputlisting{beamer/beamer#1.sty}
 }
 %
 \usepackage{makedoc}
 \newcommand\addmdclass[1]{
-  \section{\texttt{beamer#1.cls}}
+  \section{\textsf{beamer#1.cls}}
   \renewcommand*{\mdJobName}{beamer/beamer#1}
   \MakeInputJobDoc*[cls][txt]{0}{\ProcessInputWith{PPScomment}}
 }
 \newcommand\addmdstyle[1]{
-  \section{\texttt{beamer#1.sty}}
+  \section{\textsf{beamer#1.sty}}
   \renewcommand*{\mdJobName}{beamer/beamer#1}
   \MakeInputJobDoc*[sty][txt]{0}{\ProcessInputWith{PPScomment}}
 }
@@ -65,6 +65,9 @@
 \setCJKsansfont{KaiTi}
 \setCJKmonofont{SimHei}
 \begin{document}
+\title{\pkg{Beamer} 源码分析}
+\author{\href{https://bitbucket.org/zohooo/beamercode}{zohooo@yeah.net}}
+\maketitle
 \addclass{}
 \addstyle{article}
 \addstyle{basearticle}
