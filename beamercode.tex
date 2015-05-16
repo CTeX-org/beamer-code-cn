@@ -22,9 +22,9 @@
   \section{\textsf{beamer#1.cls}}
   \lstinputlisting{beamer/beamer#1.cls}
 }
-\newcommand\addstyle[1]{
-  \section{\textsf{beamer#1.sty}}
-  \lstinputlisting{beamer/beamer#1.sty}
+\newcommand\addstyle[2][]{
+  \section{\textsf{beamer#2.sty}}
+  \lstinputlisting{beamer#1/beamer#2.sty}
 }
 %
 \usepackage{makedoc}
@@ -33,9 +33,9 @@
   \renewcommand*{\mdJobName}{beamer/beamer#1}
   \MakeInputJobDoc*[cls][txt]{0}{\ProcessInputWith{PPScomment}}
 }
-\newcommand\addmdstyle[1]{
-  \section{\textsf{beamer#1.sty}}
-  \renewcommand*{\mdJobName}{beamer/beamer#1}
+\newcommand\addmdstyle[2][]{
+  \section{\textsf{beamer#2.sty}}
+  \renewcommand*{\mdJobName}{beamer#1/beamer#2}
   \MakeInputJobDoc*[sty][txt]{0}{\ProcessInputWith{PPScomment}}
 }
 %
@@ -99,4 +99,9 @@
 \addstyle{article}
 \addstyle{basearticle}
 \addstyle{baseexercise}
+\addstyle[/themes/theme]{themedefault}
+\addstyle[/themes/font]{fontthemedefault}
+\addstyle[/themes/color]{colorthemedefault}
+\addstyle[/themes/inner]{innerthemedefault}
+\addstyle[/themes/outer]{outerthemedefault}
 \end{document}
