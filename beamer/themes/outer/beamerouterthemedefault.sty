@@ -1,3 +1,4 @@
+%% % -*- coding: utf-8 -*-
 % Copyright 2007 by Till Tantau
 %
 % This file may be distributed and/or modified
@@ -148,6 +149,8 @@
 
 % Frame title: default
 
+%% 在 \sty{beamerbaseframe} 的 \env{beamer@frameslide} 环境的定义中，在插入 |frametitle| 模板前有个空白 |\vbox{}|。
+%% 因此 |frametitle| 上面会有行间距空白。在背景颜色非空时很难看，所以要用 \cs{nointerlineskip} 去掉这个多余空白。
 \defbeamertemplate*{frametitle}{default}[1][left]
 {
   \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
