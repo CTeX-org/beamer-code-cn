@@ -60,7 +60,22 @@
 %% 最后才取出此盒子（伸缩和放大处理的代码见 \sty{beamerbaseframesize}）。\par
 %%     这里的 \env{beamer@framepauses} 环境在 \sty{beamerbaseoverlay} 文件中定义，
 %% 所有的覆盖命令将在这个环境里面处理。\par
-%% 注意 \env{frame} 环境的 |frametitle| 和 |framesubtitle| 参数在这里调用 \cs{beamer@checkframetitle} 检测。
+%%     注意 \env{frame} 环境的 |frametitle| 和 |framesubtitle| 参数在这里调用 \cs{beamer@checkframetitle} 检测。
+%% 在 \env{beamer@framepauses} 环境结束时生成 \cs{beamer@frametitlebox}。\par
+%%     可以看到 |\usebeamertemplate***{frametitle}| 上面有个空白 |\vbox{}|，所以 |frametitle| 上面总有行间距。
+%% 在 |frametitle| 的背景颜色存在时，这个竖直空白看来很碍眼。因此，在定义 |frametitle| 模板时，
+%% 可以用 \cs{nointerlineskip} 命令去掉这个空白，在 \sty{beamerouterthemedefault} 中就是这样处理的。\par
+%%     由于这里使用的是带星号的 \cs{usebeamertemplate}，它实际上已经调用了 |frametitle| 的字体和颜色，
+%% 所以定义 |frametitle| 模板时可以不用写 |\usebeamerfont{frametitle}| 和 |\usebeamercolor{frametitle}|。\par
+%%     另外，带星号的 \cs{usebeamertemplate} 会将模版内容放在一个编组内，
+%% 这里载入 |frametitle| 后又加上 |\vskip0.25em|，这导致 |frametitle| 模板末尾有无 \cs{par} 的效果不同。比如
+%% \begin{verbatim}
+%% \setbeamertemplate{frametitle}{\insertframetitle}
+%% \setbeamertemplate{frametitle}{\insertframetitle\par}
+%% \end{verbatim}
+%% 这两种写法，前者在编组结束后用 |\vskip0.25em| 结束段落，此时所用字体为正常的 \cs{normalsize} 尺寸；
+%% 后者在编组内部用 \cs{par} 结束段落，此时所用字体是 |frametitle| 的 \cs{Large} 尺寸。
+%% 这样计算出的在 |frametitle| 上面插入的行间距大小就会不相同。
 \newenvironment{beamer@frameslide}{%
   \ifbeamer@autobreak\else%
     \ifx\beamer@againname\@empty%
